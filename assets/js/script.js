@@ -19,7 +19,7 @@ tvShows = ['game of thrones', 'the simpsons', 'the sopranos'];
     })
 
     // button to add tvshows button
-    var addButton = $('<button>').addClass("addButtons")
+    var addButton = $('<button>').addClass("addButtons btn-primary")
         .attr({
             "type": "submit",
             'id': "submitBtn"
@@ -56,7 +56,7 @@ tvShows = ['game of thrones', 'the simpsons', 'the sopranos'];
                 console.log(results)
 
                 for (var i = 0; i < results.length; i++) {
-                    var gifDiv = $("<div>").addClass('col-md-6');
+                    var gifDiv = $("<div>").addClass('col-md-6 mb-2');
                 
                     var rating = results[i].rating;
 
