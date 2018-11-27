@@ -2,6 +2,10 @@
     width: 200px;
 }
 
+.gifImages{
+    width: 300px;
+}
+
 button{
     margin-right: 5px;
 }
@@ -12,7 +16,11 @@ button{
 }
 
 #favorites{
-    border: 1px solid black;
-    height: 300px;
+    /* border: 1px solid black; */
+    height: 800px;
     width: 350px;
+}
+
+.gifFav{
+    width:100px;
 }

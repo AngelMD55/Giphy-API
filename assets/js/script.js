@@ -1,6 +1,6 @@
 tvShows = ['game of thrones', 'the simpsons', 'the sopranos'];
 // create buttons for each item in the array
-$(document).ready(function () {
+
     function renderButtons() {
         $('#buttons').empty()
 
@@ -69,6 +69,8 @@ $(document).ready(function () {
                         "data-animate": results[i].images.fixed_height.url,
                         "data-state": "still",
                         "dragable": true,
+                        "ondragstart": 'drag(event)',
+                        'id': results[i].id
                     })
                     showImage.addClass("gif")
 
@@ -81,7 +83,7 @@ $(document).ready(function () {
             })
     });
     // clickable gifs to animate and make still
-    $('#gifsHere').on('click', '.gif', function () {
+    $('#gifsHere, #favorites').on('click', '.gif', function () {
 
         var state = $(this).attr("data-state");
         if (state === "still") {
@@ -94,24 +96,34 @@ $(document).ready(function () {
     });
 
     // Dragable gifs to choose favorites
-    function drag(){
-        dragGif = document.getElementsByClassName('gif');
-        dragGif.addEventListener('dragstart', startDrag, false);
-        dropBox = document.getElementById('favorites')
-        dropBox.addEventListener('dragenter',function(e){e.preventDefault()} ,false);
-        dropBox.addEventListener('dragover',function(e){e.preventDefault()} ,false);
-        dropBox.addEventListener('drop', dropped ,false);
+    function allowDrop(allowdropevent) {
+        // allowdropevent.target.style.color = 'blue';
+        allowdropevent.preventDefault();
+    }
+    
+    function drag(dragevent) {
+        dragevent.dataTransfer.setData("url", dragevent.target.dataset.still);
+        dragevent.dataTransfer.setData("urlanimate", dragevent.target.dataset.animate);
+        // dragevent.target.style.color = 'green';
+        console.log(dragevent)
+    }
+    
+    function drop(dropevent) {
+        dropevent.preventDefault();
+        var url = dropevent.dataTransfer.getData("url");
+        var urlanimate = dropevent.dataTransfer.getData("urlanimate");
+        var newGif = $('<img>').attr({
+            "src": url,
+            "data-still": url,
+            "data-animate": urlanimate,
+            "data-state": "still",
+        })
+            newGif.addClass('gif gifFav')
+        $('#favorites').append(newGif);
     }
 
-    function startDrag(e){
-        
-        e.dataTransfer.setData('Text',dragGif);
-    }
+    // remove items from favorites
 
-    function dropped(e){
-        e.preventDefault();
-        dropBox.innerHTML = e.dataTransfer.getData('Text');
-    }
-    drag();
-    window.addEventListener('load', drag, false);
-})
+    $("#favorites").on('dblclick', '.gifFav', function(e) { 
+        $(this).remove(); 
+    });
